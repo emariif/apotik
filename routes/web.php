@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ObatController;
+use App\Http\Controllers\StockObatController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
@@ -38,6 +39,12 @@ Route::group(['middleware' => ['role:owner']], function() {
     Route::post('obat.edits', [ObatController::class, 'edits'])->name('obat.edits');
     Route::post('obat.updates', [ObatController::class, 'updates'])->name('obat.updates');
     Route::post('obat.hapus', [ObatController::class, 'hapus'])->name('obat.hapus');
+
+    Route::get('stocks.index', [StockObatController::class, 'index'])->name('stocks.index');
+    Route::post('stocks.store', [StockObatController::class, 'store'])->name('stocks.store');
+    Route::post('stocks.edits', [StockObatController::class, 'edits'])->name('stocks.edits');
+    Route::post('stocks.updates', [StockObatController::class, 'updates'])->name('stocks.updates');
+    Route::post('stocks.hapus', [StockObatController::class, 'hapus'])->name('stocks.hapus');
 });
 
 require __DIR__.'/auth.php';

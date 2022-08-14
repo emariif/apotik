@@ -62,57 +62,59 @@
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Stock Awal</label>
                                 <input type="text" class="form-control" id="stockLama" readonly autocomplete="off"
-                                    name="stockLama" placeholder="Stock Awal">
+                                    name="stocklama" placeholder="Stock Awal">
                                 <input type="text" hidden class="form-control" id="id" autocomplete="off"
                                     name="id" placeholder="Stock Awal">
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputPassword1">Kode</label>
-                                <input type="text" class="form-control" maxlength="8" id="kode"
-                                    autocomplete="off" name="kode" placeholder="Kode Obat">
+                                <label for="exampleInputPassword1">Masuk</label>
+                                <input type="text" class="form-control" onkeypress="return number(event)"
+                                    autocomplete="off" id="masuk" name="masuk" value="0">
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputPassword1">Dosis</label>
-                                <input type="text" class="form-control" id="dosis" autocomplete="off"
-                                    name="dosis" placeholder="Dosis Obat">
+                                <label for="exampleInputPassword1">Keluar</label>
+                                <input type="text" class="form-control" onkeypress="return number(event)"
+                                    autocomplete="off" id="keluar" name="keluar" value="0">
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputPassword1">Indikasi</label>
-                                <input type="text" class="form-control" id="indikasi" autocomplete="off"
-                                    name="indikasi" placeholder="Indikasi Obat">
+                                <label for="exampleInputPassword1">Stock Akhir</label>
+                                <input type="text" class="form-control" onkeypress="return number(event)"
+                                    autocomplete="off" id="stock" name="stock" value="0">
+                            </div>
+                            <div>
+                                STOCK OBAT
+                                <hr style="border: 1px solid rgb(180, 1, 1)">
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputPassword1">Kategpri</label>
-                                <select autocomplete="off" name="kategori_id" id="kategori" class="form-control">
-                                    <option value="">Pilih Kategori</option>
-                                    @foreach ($kategori as $item)
-                                        <option value="{{ $item->id }}">{{ $item->kategori }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <label for="exampleInputPassword1">Harga Beli</label>
+                                <input type="text" class="form-control" onkeypress="return number(event)"
+                                    autocomplete="off" id="beli" maxlength="12" name="beli">
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputPassword1">Satuan</label>
-                                <select autocomplete="off" name="satuan_id" id="satuan" class="form-control">
-                                    <option value="">Pilih Satuan</option>
-                                    @foreach ($satuan as $item)
-                                        <option value="{{ $item->id }}">{{ $item->satuan }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <label for="exampleInputPassword1">Harga Jual</label>
+                                <input type="text" class="form-control" onkeypress="return number(event)"
+                                    autocomplete="off" id="jual" maxlength="12" name="jual">
                             </div>
-                    </div>
-                    <div class="modal-footer justify-content-between">
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Tanggal Expired</label>
+                                <input type="text" class="datepicker-here form-control" autocomplete="off"
+                                    name="expired" id="expired" data-language='en' data-date-format="yyyy-mm-dd">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Keterangan</label>
+                                <input type="text" class="form-control" id="keterangan" autocomplete="off"
+                                    name="keterangan" placeholder="Kurang, Lebih, Rusak">
+                            </div>
+                            <button type="submit" id="simpan"
+                                class="btn btn-outline-light btn-success btn-block">Simpan</button>
+                        </form>
                         <button type="button" name="batal" id="btn-tutup" class="btn btn-outline-light"
                             data-dismiss="modal">Close</button>
-                        <button type="submit" id="simpan" class="btn btn-outline-light">Save</button>
                     </div>
-                    </form>
-                </div>
 
-                <meta name="csrf-token" content="{{ csrf_token() }}">
+                    <meta name="csrf-token" content="{{ csrf_token() }}">
+                </div>
             </div>
-        </div>
 </x-app-layout>
 @stack('js')
 <script src="{{ asset('plugins/datatables/jquery.dataTables.js') }}"></script>
