@@ -7,6 +7,8 @@ use App\Models\stockObat;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class StockObatController extends Controller
@@ -22,10 +24,14 @@ class StockObatController extends Controller
         if(request()->ajax()) {
             return datatables()->of($data)
             ->addColumn('admin', function($data) {
+                // return $data->users['name'];
                 return $data->users->name;
+                // return isset($data->users['name']) ? $data->users['name'] : '';
             })
-            ->addColumn('kategori_id', function($data) {
+            ->addColumn('obat_id', function($data) {
                 return $data->obats->nama;
+                // return $data->obats['nama'];
+                // return isset($data->obats['nama']) ? $data->obats['nama'] : '';
             })
             ->addColumn('aksi', function($data)
             {
@@ -34,6 +40,7 @@ class StockObatController extends Controller
                 return $button;
             })
             ->rawColumns(['aksi'])
+            ->addIndexColumn()
             ->make(true);
         }
         return view('owner.stockObatHome', compact('obat'));
@@ -88,7 +95,35 @@ class StockObatController extends Controller
     // }
 
     public function store(Request $request){
-        dd($request->all());
+        // dd($request->all());
+        $data = new stockObat();
+        $data->obat_id = $request->obat_id;
+        $data->masuk = $request->masuk;
+        $data->keluar = $request->keluar;
+        $data->jual = $request->jual;
+        $data->beli = $request->beli;
+        $data->expired = $request->expired;
+        $data->stock = $request->stock;
+        $data->keterangan = $request->keterangan;
+        $data->admin = Auth::user()->id;
+        $simpan = $data->save();
+
+        // $simpan = Obat::create($request->all())->where('admin', Auth::user()->id);
+        if($simpan) {
+            // Page::where('id', $id)->update(array('image' => 'asdasd'));
+            // stockObat::table('obats')->where('id', $request->id)->update(['ready' => 'Y']);
+            // Obat::with('obats')->where('id', $request->id)->update(['ready' => 'Y']);
+            $obat = Obat::find($request->obat_id);
+            if($obat) {
+                $obat->ready = 'Y';
+                $obat->save();
+                return response()->json(['text'=>'Data Berhasil Disimpan'], 200);
+            }
+            // return response()->json(['text'=>'Data Berhasil Disimpan'], 200);
+            // return view('owner.SupplierHome');
+        }else{
+            return response()->json(['text'=>'Data Gagal Disimpan'], 422);
+        }
     }
 
     public function getObat(Request $request){

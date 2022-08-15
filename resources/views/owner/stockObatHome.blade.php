@@ -145,6 +145,10 @@
                 url: "{{ route('stocks.index') }}"
             },
             columns: [{
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex'
+                },
+                {
                     data: 'obat_id',
                     name: 'obat_id.nama'
                 },

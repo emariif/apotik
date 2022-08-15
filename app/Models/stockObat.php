@@ -24,11 +24,11 @@ class stockObat extends Model
 
     public function obats()
     {
-        return $this->belongsTo('App\Models\obat');
+        return $this->belongsTo('App\Models\obat', 'obat_id', 'id');
     }
 
     public function users()
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo('App\Models\User', 'admin', 'id');
     }
 }
