@@ -64,7 +64,7 @@
                                 <input type="text" class="form-control" id="stockLama" readonly autocomplete="off"
                                     name="stocklama" placeholder="Stock Awal">
                                 <input type="text" hidden class="form-control" id="id" autocomplete="off"
-                                    name="id" placeholder="Stock Awal">
+                                    name="id" placeholder="0">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Masuk</label>
@@ -78,8 +78,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Stock Akhir</label>
-                                <input type="text" class="form-control" onkeypress="return number(event)"
-                                    autocomplete="off" id="stock" name="stock" value="0">
+                                <input type="text" class="form-control" readonly onkeypress="return number(event)"
+                                    autocomplete="off" id="stock" name="stock" value="">
                             </div>
                             <div>
                                 STOCK OBAT
@@ -98,7 +98,11 @@
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Tanggal Expired</label>
                                 <input type="text" class="datepicker-here form-control" autocomplete="off"
-                                    name="expired" id="expired" data-language='en' data-date-format="yyyy-mm-dd">
+                                    name="expired" id="expired" data-position="top left" data-language='en'
+                                    data-date-format="yyyy-mm-dd">
+                                {{-- <input type="text" class="datepicker-here form-control" data-language='en'
+                                    name="expired" id="expired" data-multiple-dates="3"
+                                    data-multiple-dates-separator=", " data-position='top left' /> --}}
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Keterangan</label>
@@ -120,6 +124,8 @@
 <script src="{{ asset('plugins/datatables/jquery.dataTables.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.26/dist/sweetalert2.all.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="{{ asset('dist/air-datepicker/dist/js/datepicker.js') }}"></script>
+<script src="{{ asset('dist/air-datepicker/dist/js/i18n/datepicker.en.js') }}"></script>
 <script>
     $(document).ready(function() {
         loaddata()
@@ -175,13 +181,7 @@
         })
     }
 
-    function number(evt) {
-        var charCode = (evt.which) ? evt.which : event.keyCode
-        if (charCode > 31 && (charCode < 48 || charCode > 57))
-            return false;
-        return true;
-    }
-
+    // Fungsi Tambah Data
     $(document).on('submit', 'form', function(event) {
         event.preventDefault();
 
@@ -211,6 +211,58 @@
                 toastr.error(xhr.responseJSON.text, 'Gagal')
             }
         })
+    })
+
+    // Input Harus Angka
+    function number(evt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+        return true;
+    }
+
+    $(document).on('change', '#obat', function() {
+        let id = $(this).val()
+        $.ajax({
+            url: "{{ route('getObat') }}",
+            type: 'post',
+            data: {
+                id: id,
+                _token: "{{ csrf_token() }}"
+            },
+            success: function(res) {
+                console.log(res).val(res.data.stock);
+            },
+            error: function(xhr) {
+                console.log(xhr);
+            }
+        })
+    })
+
+    $(document).on('blur', '#masuk', function() {
+        let awal = $('#stockLama').val() //parseInt digunakan jika string
+        let masuk = $('#masuk').val()
+        let keluar = $('#keluar').val()
+        let akhir = (awal + masuk) - keluar
+        // if (!isNaN(awal) && !isNaN(masuk) && !isNaN(keluar)) {
+        //     $('#stock').val(awal + masuk - keluar);
+        // } else {
+        //     alert('Please enter numbers only!');
+        // }
+        $('#stock').val(akhir)
+    })
+
+    $(document).on('blur', '#keluar', function() {
+        let awal = $('#stockLama').val()
+        let masuk = $('#masuk').val()
+        let keluar = $('#keluar').val()
+        let akhir = (awal + masuk) - keluar
+        $('#stock').val(akhir)
+        // if (!isNaN(awal) && !isNaN(masuk) && !isNaN(keluar)) {
+        //     $('#stock').val(awal + masuk - keluar);
+        // } else {
+        //     alert('Please enter numbers only!');
+        // }
     })
 
     // $.ajaxSetup({
@@ -290,7 +342,8 @@
                                     showConfirmButton: false,
                                     timer: 1500
                                 }).then((res) => {
-                                    $('#tabel').DataTable().ajax.reload()
+                                    $('#tabel').DataTable().ajax
+                                        .reload()
                                 })
                             });
                         }

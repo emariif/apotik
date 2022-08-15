@@ -39,52 +39,70 @@ class StockObatController extends Controller
         return view('owner.stockObatHome', compact('obat'));
     }
 
-    public function store(Request $request)
-    {
-        // dd($request->all());
-        // $simpan = stockObat::create($request->all());
-        // if($simpan) {
-        //     return response()->json(['text'=>'Data Berhasil Disimpan'], 200);
-        // }else{
-        //     return response()->json(['text'=>'Data Gagal Disimpan'], 400);
-        // }
+    // public function store(Request $request)
+    // {
+    //     // dd($request->all());
+    //     // $simpan = stockObat::create($request->all());
+    //     // if($simpan) {
+    //     //     return response()->json(['text'=>'Data Berhasil Disimpan'], 200);
+    //     // }else{
+    //     //     return response()->json(['text'=>'Data Gagal Disimpan'], 400);
+    //     // }
 
-        //Aturan validasi
-        $rules = [
-            'nama' => 'required|unique:obats',
-            'kode' => 'required|max: 8|unique:obats',
-            'dosis' => 'required',
-            'indikasi' => 'required',
-            'kategori_id' => 'required',
-            'satuan_id' => 'required',
-        ]; 
+    //     //Aturan validasi
+    //     $rules = [
+    //         'nama' => 'required|unique:obats',
+    //         'kode' => 'required|max: 8|unique:obats',
+    //         'dosis' => 'required',
+    //         'indikasi' => 'required',
+    //         'kategori_id' => 'required',
+    //         'satuan_id' => 'required',
+    //     ]; 
 
-        //teks yang ditampilkan
-        $text = [
-            'nama.required' => 'Nama Obat Wajib diisi',
-            'nama.unique' => 'Nama Obat sudah ada',
-            'kode.required' => 'Kode Obat Wajib diisi',
-            'kode.max' => 'Kode Obat maximal 8 digit',
-            'kode.unique' => 'Kode Obat sudah ada',
-            'dosis.required' => 'Dosis Wajib diisi',
-            'indikasi.required' => 'Indikasi Wajib diisi',
-            'kategori_id.required' => 'Kategori Wajib diisi',
-            'satuan_id.required' => 'Satuan Wajib diisi',
-        ]; 
+    //     //teks yang ditampilkan
+    //     $text = [
+    //         'nama.required' => 'Nama Obat Wajib diisi',
+    //         'nama.unique' => 'Nama Obat sudah ada',
+    //         'kode.required' => 'Kode Obat Wajib diisi',
+    //         'kode.max' => 'Kode Obat maximal 8 digit',
+    //         'kode.unique' => 'Kode Obat sudah ada',
+    //         'dosis.required' => 'Dosis Wajib diisi',
+    //         'indikasi.required' => 'Indikasi Wajib diisi',
+    //         'kategori_id.required' => 'Kategori Wajib diisi',
+    //         'satuan_id.required' => 'Satuan Wajib diisi',
+    //     ]; 
 
-        $validasi = Validator::make($request->all(), $rules, $text);
+    //     $validasi = Validator::make($request->all(), $rules, $text);
 
-        if($validasi->fails()) {
-            return response()->json(['sucess' => 0, 'text' => $validasi->errors()->first()], 422); //422 untuk error validation, dan first() untuk menampilkan error pertama (tidak semua)
-        }
+    //     if($validasi->fails()) {
+    //         return response()->json(['sucess' => 0, 'text' => $validasi->errors()->first()], 422); //422 untuk error validation, dan first() untuk menampilkan error pertama (tidak semua)
+    //     }
         
-        $simpan = stockObat::create($request->all());
-        if($simpan) {
-            return response()->json(['text'=>'Data Berhasil Disimpan'], 200);
-            // return view('owner.SupplierHome');
+    //     $simpan = stockObat::create($request->all());
+    //     if($simpan) {
+    //         return response()->json(['text'=>'Data Berhasil Disimpan'], 200);
+    //         // return view('owner.SupplierHome');
+    //     }else{
+    //         return response()->json(['text'=>'Data Gagal Disimpan'], 422);
+    //     }
+    // }
+
+    public function store(Request $request){
+        dd($request->all());
+    }
+
+    public function getObat(Request $request){
+        $data = stockObat::where('obat_id', $request->id)->first();
+        $null = [
+            'stock' => 0
+        ];
+        
+        if($data != null){
+            return response()->json(['data' => $data]);
         }else{
-            return response()->json(['text'=>'Data Gagal Disimpan'], 422);
+            return response()->json(['data' => $null]);
         }
+        // return response()->json(['data' => $data]);
     }
 
     public function edits(Request $request)

@@ -42,6 +42,7 @@ Route::group(['middleware' => ['role:owner']], function() {
 
     Route::get('stocks.index', [StockObatController::class, 'index'])->name('stocks.index');
     Route::post('stocks.store', [StockObatController::class, 'store'])->name('stocks.store');
+    Route::post('getObat', [StockObatController::class, 'getObat'])->name('getObat');
     Route::post('stocks.edits', [StockObatController::class, 'edits'])->name('stocks.edits');
     Route::post('stocks.updates', [StockObatController::class, 'updates'])->name('stocks.updates');
     Route::post('stocks.hapus', [StockObatController::class, 'hapus'])->name('stocks.hapus');
