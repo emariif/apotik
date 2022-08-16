@@ -427,7 +427,8 @@
     </script>
 
     <script src="{{ asset('dist/air-datepicker/dist/js/datepicker.js') }}"></script>
-
+    <script src="{{ asset('dist/jquery.inputmask.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.7/jquery.inputmask.min.js"></script>
     @stack('js');
 </body>
 

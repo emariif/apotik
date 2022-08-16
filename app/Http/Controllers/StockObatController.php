@@ -117,9 +117,9 @@ class StockObatController extends Controller
             if($obat) {
                 $obat->ready = 'Y';
                 $obat->save();
-                return response()->json(['text'=>'Data Berhasil Disimpan'], 200);
+                // return response()->json(['text'=>'Data Berhasil Disimpan'], 200);
             }
-            // return response()->json(['text'=>'Data Berhasil Disimpan'], 200);
+            return response()->json(['text'=>'Data Berhasil Disimpan'], 200);
             // return view('owner.SupplierHome');
         }else{
             return response()->json(['text'=>'Data Gagal Disimpan'], 422);
@@ -143,15 +143,31 @@ class StockObatController extends Controller
     public function edits(Request $request)
     {
         // dd($request->all());
-        $data = stockObat::find($request->id);
+        $id = $request->id;
+        // $data = stockObat::find($id);
+        // $data = stockObat::with('obats')->where('id', $id)->first();
+        // $obat = $request->obat_id;
+        $data = stockObat::where('id', $id)->first();
         return response()->json($data);
     }
 
     public function updates(Request $request)
     {
         // dd($request->all());
+        $datas = [
+            'obat_id' => $request->obat_id,
+            'masuk' => $request->masuk,
+            'keluar' => $request->keluar,
+            'jual' => $request->jual,
+            'beli' => $request->beli,
+            'expired' => $request->expired,
+            'stock' => $request->stock,
+            'keterangan' => $request->keterangan,
+            'admin' => Auth::user()->id,
+        ];
         $data = stockObat::find($request->id);
-        $simpan = $data->update($request->all());
+        // $simpan = $data->update($request->all());
+        $simpan = $data->update($datas);
 
         // return response()->json($data);
 
@@ -159,7 +175,7 @@ class StockObatController extends Controller
             return response()->json(['text'=>'Data Berhasil Diperbarui'], 200);
             // return view('owner.SupplierHome');
         }else{
-            return response()->json(['text'=>'Data Gagal Disimpan'], 400);
+            return response()->json(['text'=>'Data Gagal Diperbarui'], 400);
         }
     }
 

@@ -61,8 +61,9 @@
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Stock Awal</label>
-                                <input type="text" class="form-control" id="stockLama" readonly autocomplete="off"
-                                    name="stocklama" placeholder="Stock Awal">
+                                <input type="text" class="form-control" id="stockLama"
+                                    onkeypress="return number(event)" readonly autocomplete="off" name="stocklama"
+                                    value="">
                                 <input type="text" hidden class="form-control" id="id" autocomplete="off"
                                     name="id" placeholder="0">
                             </div>
@@ -88,12 +89,16 @@
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Harga Beli</label>
                                 <input type="text" class="form-control" onkeypress="return number(event)"
-                                    autocomplete="off" id="beli" maxlength="12" name="beli">
+                                    autocomplete="off" id="beli" maxlength="12" name="beli"
+                                    data-inputmask="'alias': 'numeric', 'digits': 2, 'prefix': 'Rp. ', groupSeparator': ',', 'autoGroup' : true,
+                                    'digitsOptional' :false">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Harga Jual</label>
                                 <input type="text" class="form-control" onkeypress="return number(event)"
-                                    autocomplete="off" id="jual" maxlength="12" name="jual">
+                                    autocomplete="off" id="jual" maxlength="12" name="jual"
+                                    data-inputmask="'alias': 'numeric', 'digits': 2, 'prefix': 'Rp. ', groupSeparator': ',', 'autoGroup' : true,
+                                    'digitsOptional' :false">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Tanggal Expired</label>
@@ -112,7 +117,7 @@
                             <button type="submit" id="simpan"
                                 class="btn btn-outline-light btn-success btn-block">Simpan</button>
                         </form>
-                        <button type="button" name="batal" id="btn-tutup" class="btn btn-outline-light"
+                        <button type="button" name="batal" id="btn-tutup" hidden class="btn btn-outline-light"
                             data-dismiss="modal">Close</button>
                     </div>
 
@@ -126,9 +131,19 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="{{ asset('dist/air-datepicker/dist/js/datepicker.js') }}"></script>
 <script src="{{ asset('dist/air-datepicker/dist/js/i18n/datepicker.en.js') }}"></script>
+<script src="{{ asset('dist/jquery.inputmask.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.7/jquery.inputmask.min.js"></script>
 <script>
     $(document).ready(function() {
         loaddata()
+        // $('#beli').inputMask({
+        //     alias: 'numeric',
+        //     digits: 2,
+        //     prefix: 'Rp. ',
+        //     groupSeparator: ',',
+        //     autoGroup: true,
+        //     digitsOptional: false
+        // });
         // Swal.fire(
         //     'Good job!',
         //     'You clicked the button!',
@@ -206,9 +221,9 @@
                 console.log(res);
                 $('#btn-tutup').click()
                 $('#tabel').DataTable().ajax.reload()
-                $('#forms')[0].reset();
                 // alert(res.text)
-                toastr.success(res.text, 'Success')
+                toastr.success(res.text, 'Sukses')
+                $('#forms')[0].reset();
             },
             error: function(xhr) {
                 // console.log(xhr);
@@ -247,7 +262,8 @@
         let awal = $('#stockLama').val() //parseInt digunakan jika string
         let masuk = $('#masuk').val()
         let keluar = $('#keluar').val()
-        let akhir = (awal + masuk) - keluar
+        // let akhir = (Number(awal) + Number(masuk)) - Number(keluar)
+        let akhir = (parseInt(awal) + parseInt(masuk)) - parseInt(keluar)
         // if (!isNaN(awal) && !isNaN(masuk) && !isNaN(keluar)) {
         //     $('#stock').val(awal + masuk - keluar);
         // } else {
@@ -260,7 +276,8 @@
         let awal = $('#stockLama').val()
         let masuk = $('#masuk').val()
         let keluar = $('#keluar').val()
-        let akhir = (awal + masuk) - keluar
+        // let akhir = (Number(awal) + Number(masuk)) - Number(keluar)
+        let akhir = (parseInt(awal) + parseInt(masuk)) - parseInt(keluar)
         $('#stock').val(akhir)
         // if (!isNaN(awal) && !isNaN(masuk) && !isNaN(keluar)) {
         //     $('#stock').val(awal + masuk - keluar);
@@ -281,6 +298,7 @@
         // console.log(tes);
 
         $('#forms').attr('action', "{{ route('stocks.updates') }}")
+        $('#btn-tambah').click()
         let id = $(this).attr('id')
 
         $.ajax({
@@ -292,15 +310,22 @@
                 _token: "{{ csrf_token() }}"
             },
             success: function(res) {
-                console.log(res);
+                // console.log(res);
+                // let newOption = new Option(res.obat_id.nama, res.obat_id, true, true);
+                //fungsi untuk melihat data obat yang sudah dipilih
+                let newOption = new Option(res.obats.nama, res.obat_id, true, true);
                 $('#id').val(res.id)
-                $('#nama').val(res.nama)
-                $('#kode').val(res.kode)
-                $('#dosis').val(res.dosis)
-                $('#indikasi').val(res.indikasi)
-                $('#kategori').val(res.kategori_id)
-                $('#satuan').val(res.satuan_id)
-                $('#btn-tambah').click()
+                // $('#obat').val(res.obat_id)
+                $('#obat').append(newOption).trigger(
+                    'change') //fungsi untuk menambahkan data obat yang sudah dipilih
+                $('#obat').prop('disabled', true) // disable combobox
+                $('#beli').val(res.beli)
+                $('#jual').val(res.jual)
+                $('#stockLama').val(res.stock)
+                $('#keterangan').val(res.keterangan)
+                $('#expired').val(res.expired)
+                // $('#btn-tambah').click()
+                console.log(res);
             },
             error: function(xhr) {
                 console.log(xhr);
