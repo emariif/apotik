@@ -49,6 +49,7 @@ Route::group(['middleware' => ['role:owner']], function() {
     Route::post('stocks.hapus', [StockObatController::class, 'hapus'])->name('stocks.hapus');
 
     Route::get('penjualan.index', [PenjualanController::class, 'index'])->name('penjualan.index');
+    Route::post('penjualan.store', [PenjualanController::class, 'store'])->name('penjualan.store');
 });
 
 require __DIR__.'/auth.php';

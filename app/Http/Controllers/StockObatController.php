@@ -190,4 +190,19 @@ class StockObatController extends Controller
             return response()->json(['text'=>'Data Gagal Dihapus'], 400);
         }
     }
+
+    public function getDataObat(Request $request){
+        $data = stockObat::find($request->id)->first();
+        return response()->json($data);
+        // $null = [
+        //     'stock' => 0
+        // ];
+        
+        // if($data != null){
+        //     return response()->json(['data' => $data]);
+        // }else{
+        //     return response()->json(['data' => $null]);
+        // }
+        // return response()->json(['data' => $data]);
+    }
 }

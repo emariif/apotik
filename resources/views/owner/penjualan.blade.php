@@ -8,7 +8,7 @@
                             <h3 class="card-title"><i class="fas fa-user-edit"></i>Data Customer</h3>
                         </div>
                         <hr style="border: 1px solid red;">
-                        <form action="" method="POST" id="sample_form">
+                        <form action="{{ route('penjualan.store') }}" method="POST" id="sample_form">
                             @csrf
                             <div class="form-group">
                                 <label for="FormGroupExampleInput">Nama Pasien</label>
@@ -54,9 +54,9 @@
                                 <select name="obat" id="obat"
                                     class="custom-select mr-sm-2 js-example-basic-single form-control">
                                     <option value="">Pilih ...</option>
-                                    {{-- @foreach ($obat as $item)
-                                        <option value="{{ $item->id }}">{{ $item->namaObat }}</option>
-                                    @endforeach --}}
+                                    @foreach ($obat as $item)
+                                        <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="form-group col-3">
@@ -183,4 +183,36 @@
             return false;
         return true;
     }
+
+    $('#obat').change(function() {
+        let id = $(this).val()
+        $.ajax({
+            url: "{{ route('getDataObat') }}",
+            type: 'post',
+            data: {
+                id: id,
+                _token: "{{ csrf_token() }}"
+            },
+            success: function(res) {
+                console.log(res);
+                $('#harga').val(res.jual)
+                $('#stock').val(res.stock)
+            }
+        })
+    })
+
+    $(document).on('blur', '#qty', function() {
+        // let qty = $(this).val()
+        // let harga = $('#harga').val()
+        // let diskon = $('#diskon').val()
+        // let total = qty * harga
+        // let diskon_total = total * diskon / 100
+        // let total_akhir = total - diskon_total
+        // $('#total').val(total_akhir)
+
+        let qty = $(this).val()
+        let harga = $('#harga').val()
+        let total = qty * harga
+        $('#total').val(total)
+    })
 </script>

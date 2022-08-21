@@ -283,8 +283,8 @@
         let awal = $('#stockLama').val()
         let masuk = $('#masuk').val()
         let keluar = $('#keluar').val()
-        // let akhir = (Number(awal) + Number(masuk)) - Number(keluar)
-        let akhir = (parseInt(awal) + parseInt(masuk)) - parseInt(keluar)
+        let akhir = (Number(awal) + Number(masuk)) - Number(keluar)
+        // let akhir = (parseInt(awal) + parseInt(masuk)) - parseInt(keluar)
         $('#stock').val(akhir)
         // if (!isNaN(awal) && !isNaN(masuk) && !isNaN(keluar)) {
         //     $('#stock').val(awal + masuk - keluar);
