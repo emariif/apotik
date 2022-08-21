@@ -1,9 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ObatController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ObatController;
+use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\StockObatController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
@@ -46,6 +47,8 @@ Route::group(['middleware' => ['role:owner']], function() {
     Route::post('stocks.edits', [StockObatController::class, 'edits'])->name('stocks.edits');
     Route::post('stocks.updates', [StockObatController::class, 'updates'])->name('stocks.updates');
     Route::post('stocks.hapus', [StockObatController::class, 'hapus'])->name('stocks.hapus');
+
+    Route::get('penjualan.index', [PenjualanController::class, 'index'])->name('penjualan.index');
 });
 
 require __DIR__.'/auth.php';

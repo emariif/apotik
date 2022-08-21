@@ -132,10 +132,17 @@
 <script src="{{ asset('dist/air-datepicker/dist/js/datepicker.js') }}"></script>
 <script src="{{ asset('dist/air-datepicker/dist/js/i18n/datepicker.en.js') }}"></script>
 <script src="{{ asset('dist/jquery.inputmask.js') }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.7/jquery.inputmask.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.7-beta.23/jquery.inputmask.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script>
     $(document).ready(function() {
         loaddata()
+        // $('#obats').hide();
+        // $('#obat').select2({});
+        // $(':input').inputmask({
+        //     removMaskOnSubmit: true,
+        //     rightAlign: true,
+        // })
         // $('#beli').inputMask({
         //     alias: 'numeric',
         //     digits: 2,
@@ -319,8 +326,8 @@
                 $('#obat').append(newOption).trigger(
                     'change') //fungsi untuk menambahkan data obat yang sudah dipilih
                 $('#obat').prop('disabled', true) // disable combobox
-                $('#beli').val(res.beli)
-                $('#jual').val(res.jual)
+                $('#beli').val(parseInt(res.beli) + '00')
+                $('#jual').val(parseInt(res.jual) + '00')
                 $('#stockLama').val(res.stock)
                 $('#keterangan').val(res.keterangan)
                 $('#expired').val(res.expired)

@@ -35,4 +35,9 @@ class Obat extends Model
     {
         return $this->hasOne(StockObat::class, 'obat_id', 'id');
     }
+
+    public function penjualans()
+    {
+        return $this->hasMany(Penjualan::class, 'item', 'id');
+    }
 }
