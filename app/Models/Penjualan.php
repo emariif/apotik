@@ -9,7 +9,7 @@ class Penjualan extends Model
 {
     use HasFactory;
     protected $fillable = ['nota', 'status', 'tanggal', 'qty', 'pajak', 'diskon', 'subTotal', 'item', 'consumer', 'kasir'];
-    protected $with = ['obats', 'pasiens', 'users'];
+    protected $with = ['obats', 'pasiens', 'stock_obats', 'users'];
 
     public function obats()
     {
@@ -19,6 +19,11 @@ class Penjualan extends Model
     public function pasiens()
     {
         return $this->belongsTo(Pasien::class, 'consumer');
+    }
+
+    public function stock_obats()
+    {
+        return $this->belongsTo(StockObat::class, 'obat_id', 'obats.id');
     }
 
     public function users()

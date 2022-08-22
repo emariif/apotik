@@ -17,8 +17,8 @@ class CreatePasiensTable extends Migration
             $table->id();
             $table->string('nama');
             $table->string('telp', 12);
-            $table->string('resep');
-            $table->string('pengirim');
+            $table->string('resep')->nullable();
+            $table->string('pengirim')->nullable();
             $table->string('alamat');
             $table->timestamps();
         });

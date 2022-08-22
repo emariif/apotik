@@ -326,8 +326,10 @@
                 $('#obat').append(newOption).trigger(
                     'change') //fungsi untuk menambahkan data obat yang sudah dipilih
                 $('#obat').prop('disabled', true) // disable combobox
-                $('#beli').val(parseInt(res.beli) + '00')
-                $('#jual').val(parseInt(res.jual) + '00')
+                $('#beli').val(parseInt(res.beli) - '00')
+                $('#jual').val(parseInt(res.jual) - '00')
+                // $('#beli').val(res.beli)
+                // $('#jual').val(res.jual)
                 $('#stockLama').val(res.stock)
                 $('#keterangan').val(res.keterangan)
                 $('#expired').val(res.expired)

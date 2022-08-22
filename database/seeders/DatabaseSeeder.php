@@ -16,22 +16,22 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\Supplier::factory(100)->create();
-        $this->call(LaratrustSeeder::class);
-        // Kategori::create([
-        //     'kategori' => 'Bebas'
-        // ]);
-        // Kategori::create([
-        //     'kategori' => 'Bebas Terbatas'
-        // ]);
-        // Kategori::create([
-        //     'kategori' => 'Narkotika'
-        // ]);
+        // $this->call(LaratrustSeeder::class);
+        Kategori::create([
+            'kategori' => 'Bebas'
+        ]);
+        Kategori::create([
+            'kategori' => 'Bebas Terbatas'
+        ]);
+        Kategori::create([
+            'kategori' => 'Narkotika'
+        ]);
 
-        // Satuan::create([
-        //     'satuan' => 'Gram'
-        // ]);
-        // Satuan::create([
-        //     'satuan' => 'Pcs'
-        // ]);
+        Satuan::create([
+            'satuan' => 'Gram'
+        ]);
+        Satuan::create([
+            'satuan' => 'Pcs'
+        ]);
     }
 }

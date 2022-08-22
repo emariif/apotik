@@ -55,7 +55,7 @@
                                     class="custom-select mr-sm-2 js-example-basic-single form-control">
                                     <option value="">Pilih ...</option>
                                     @foreach ($obat as $item)
-                                        <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                                        <option value="{{ $item->obat_id }}">{{ $item->obats->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -65,7 +65,7 @@
                             </div>
                             <div class="form-group col-3">
                                 <label>No Kwitansi</label>
-                                <input type="text" class="form-control" readonly name="no" id="no"
+                                <input type="text" class="form-control" readonly name="nota" id="nota"
                                     value="{{ $nomer }}">
                             </div>
                             <div class="form-group col-3">
@@ -111,7 +111,7 @@
                         </div>
                         <br><br>
                         <div class="card card-danger table-responsive">
-                            <table class="table table-bordered table-striped table-sm" id="tabel1">
+                            <table class="table table-bordered table-striped table-sm" id="tabel">
                                 <thead>
                                     <tr>
                                         <th>No.</th>
@@ -159,16 +159,14 @@
                 data-target="#modal-info">
                 Tambah
             </button> --}}
-    </div>
+        <div class="modal fade" id="modal-secondary" tabindex="-1" role="dialog"
+            aria-labelledby="modal-secondary-label"> </div>
     </div>
 </x-app-layout>
 @stack('js')
 <script src="{{ asset('plugins/datatables/jquery.dataTables.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.26/dist/sweetalert2.all.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-<script src="{{ asset('dist/air-datepicker/dist/js/datepicker.js') }}"></script>
-<script src="{{ asset('dist/air-datepicker/dist/js/i18n/datepicker.en.js') }}"></script>
-<script src="{{ asset('dist/jquery.inputmask.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.7-beta.23/jquery.inputmask.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
@@ -212,7 +210,107 @@
 
         let qty = $(this).val()
         let harga = $('#harga').val()
+        let stock = $('#stock').val() - qty
         let total = qty * harga
         $('#total').val(total)
+        $('#stock').val(stock)
+    })
+
+    // Tambah Data
+    $(document).on('submit', 'form', function(event) {
+        event.preventDefault();
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: $(this).attr('method'),
+            typeData: "JSON",
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function(res) {
+                console.log(res);
+                // $('#btn-tutup').click()
+                // $('#tabel').DataTable().ajax.reload()
+                $('#tabel').DataTable().draw();
+                // alert(res.text)
+                toastr.success(res.text, 'Sukses')
+                // $('#forms')[0].reset();
+            },
+            error: function(xhr) {
+                // console.log(xhr);
+                toastr.error(xhr.responseJSON.text, 'Gagal')
+            }
+        })
+    })
+
+    $('#tabel').DataTable({
+        serverSide: true,
+        processing: true,
+        responsive: true,
+        ajax: {
+            url: "{{ route('penjualan.dataTable') }}",
+            data: {
+                id: $('#nota').val()
+            }
+        },
+        columns: [{
+                data: null,
+                "sortable": false,
+                render: function(data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                } //Auto Numbering
+            },
+            // {
+            //     data: 'id',
+            //     name: 'id',
+            // },
+            {
+                data: 'item',
+                name: 'item'
+            },
+            {
+                data: 'qty',
+                name: 'qty'
+            },
+            {
+                data: 'jual',
+                name: 'jual',
+                // render: function(data, type, row) {
+                //     return 'Rp. ' + data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                // }
+                render: $.fn.dataTable.render.number('.', ',', 2, 'Rp. ')
+            },
+            {
+                data: 'subTotal',
+                name: 'subTotal',
+                // render: function(data, type, row) {
+                //     return 'Rp. ' + data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                // }
+                render: $.fn.dataTable.render.number('.', ',', 2, 'Rp. ')
+            },
+            // {
+            //     data: 'keterangan',
+            //     name: 'keterangan'
+            // },
+            // {
+            //     data: 'updated_at',
+            //     name: 'updated_at'
+            // },
+            // {
+            //     data: 'admin',
+            //     name: 'admin.name'
+            // },
+            {
+                data: 'aksi',
+                name: 'aksi',
+                orderable: false
+            },
+        ]
     })
 </script>

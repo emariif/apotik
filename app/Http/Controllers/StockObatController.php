@@ -155,7 +155,7 @@ class StockObatController extends Controller
     {
         // dd($request->all());
         $datas = [
-            'obat_id' => $request->obat_id,
+            // 'obat_id' => $request->obat_id, //ini tidak perlu karena sudah ada di model (otomatis)
             'masuk' => $request->masuk,
             'keluar' => $request->keluar,
             'jual' => $request->jual,
@@ -165,6 +165,7 @@ class StockObatController extends Controller
             'keterangan' => $request->keterangan,
             'admin' => Auth::user()->id,
         ];
+        
         $data = stockObat::find($request->id);
         // $simpan = $data->update($request->all());
         $simpan = $data->update($datas);
@@ -192,7 +193,7 @@ class StockObatController extends Controller
     }
 
     public function getDataObat(Request $request){
-        $data = stockObat::find($request->id)->first();
+        $data = stockObat::where('obat_id', $request->id)->first();
         return response()->json($data);
         // $null = [
         //     'stock' => 0
