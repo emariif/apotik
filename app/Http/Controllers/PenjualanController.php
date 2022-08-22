@@ -123,4 +123,21 @@ class PenjualanController extends Controller
             ->make(true);
         }
     }
+
+    // Fungsi Hapus Orderan
+    public function hapus(Request $request){
+        $id = $request->id;
+        $hapusJual = Penjualan::find($id);
+
+        // Melakukan Update terlebih dahulu sebelum penghapusan
+        $stock = stockObat::where('obat_id', $hapusJual->item)->first(); //limit 1 (fitst)
+        $tambah = $hapusJual->qty + $stock->stock; //Update hasil setelah dihapus
+        $stock->update(['stock' => $tambah]); //Update stock (harus array =>)
+        if ($stock) {
+            $hapus = $hapusJual->delete();
+            return response()->json(['text' => 'Data Berhasil Dikurangi'], 200);
+        } else {
+            return response()->json(['text' => 'Sistem Error'], 500);
+        }
+    }
 }

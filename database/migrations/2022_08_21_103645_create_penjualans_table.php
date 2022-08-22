@@ -16,7 +16,7 @@ class CreatePenjualansTable extends Migration
         Schema::create('penjualans', function (Blueprint $table) {
             $table->id();
             $table->string('nota', 255);
-            $table->enum('status', ['y', 'n'])->default('y');
+            $table->enum('status', ['y', 'n'])->default('n');
             $table->date('tanggal');
             $table->integer('qty');
             $table->integer('pajak')->default(0);

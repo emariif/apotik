@@ -51,7 +51,8 @@ Route::group(['middleware' => ['role:owner']], function() {
     Route::resource('penjualan', PenjualanController::class);
     // Route::get('penjualan.index', [PenjualanController::class, 'index'])->name('penjualan.index');
     // Route::post('penjualan.store', [PenjualanController::class, 'store'])->name('penjualan.store');
-    Route::get('penjualan.dataTable', [PenjualanController::class, 'dataTable'])->name('penjualan.dataTable');
+    Route::get('penjualan.dataTable', [PenjualanController::class, 'dataTable'])->name('dataTable');
+    Route::post('penjualan.hapus', [PenjualanController::class, 'hapus'])->name('hapusOrder');
 });
 
 require __DIR__.'/auth.php';

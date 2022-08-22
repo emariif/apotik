@@ -236,8 +236,12 @@
             success: function(res) {
                 console.log(res);
                 // $('#btn-tutup').click()
-                // $('#tabel').DataTable().ajax.reload()
-                $('#tabel').DataTable().draw();
+                $('#obat').prop('disabled', true)
+                $('#qty').prop('disabled', true)
+                $('#diskon').prop('disabled', true)
+                $('#tambah').hide()
+                $('#tabel').DataTable().ajax.reload()
+                // $('#tabel').DataTable().draw();
                 // alert(res.text)
                 toastr.success(res.text, 'Sukses')
                 // $('#forms')[0].reset();
@@ -254,7 +258,7 @@
         processing: true,
         responsive: true,
         ajax: {
-            url: "{{ route('penjualan.dataTable') }}",
+            url: "{{ route('dataTable') }}",
             data: {
                 id: $('#nota').val()
             }
@@ -312,5 +316,34 @@
                 orderable: false
             },
         ]
+    })
+
+    $(document).on('click', '.hapus', function() {
+        let id = $(this).attr('id')
+        $.ajax({
+            url: "{{ route('hapusOrder') }}",
+            type: 'post',
+            data: {
+                id: id,
+                _token: "{{ csrf_token() }}"
+            },
+            success: function(res) {
+                // console.log(res);
+                toastr.success(res.text, 'Sukses')
+                $('#tabel').DataTable().ajax.reload()
+            },
+            error: function(xhr) {
+                toastr.error(xhr.responseJSON.text, 'Gagal')
+            }
+        })
+    })
+
+    $('#buka').click(function() {
+        $('#tambah').show()
+        $('#obat').prop('disabled', false)
+        $('#qty').attr('disabled', false)
+        $('#qty').val(null)
+        $('#diskon').val(null)
+        $('#diskon').attr('disabled', false)
     })
 </script>
