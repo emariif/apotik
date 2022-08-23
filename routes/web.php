@@ -6,6 +6,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\StockObatController;
+use App\Http\Controllers\PembayaranController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
@@ -53,6 +54,8 @@ Route::group(['middleware' => ['role:owner']], function() {
     // Route::post('penjualan.store', [PenjualanController::class, 'store'])->name('penjualan.store');
     Route::get('penjualan.dataTable', [PenjualanController::class, 'dataTable'])->name('dataTable');
     Route::post('penjualan.hapus', [PenjualanController::class, 'hapus'])->name('hapusOrder');
+
+    Route::post('penjualan.store', [PembayaranController::class, 'store'])->name('simpanPenjualan');
 });
 
 require __DIR__.'/auth.php';

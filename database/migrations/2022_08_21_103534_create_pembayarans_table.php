@@ -16,11 +16,11 @@ class CreatePembayaransTable extends Migration
         Schema::create('pembayarans', function (Blueprint $table) {
             $table->id();
             $table->string('nota');
-            $table->double('total', 9,2);
-            $table->double('diskon', 9,2);
-            $table->double('pajak', 9,2);
-            $table->double('dibayar', 9,2);
-            $table->double('kembali', 9,2);
+            $table->double('total', 12,2);
+            $table->double('diskon', 12,2)->default(0);
+            $table->double('pajak', 12,2)->default(0);
+            $table->double('dibayar', 12,2);
+            $table->double('kembali', 12,2);
             $table->enum('status', ['Cash', 'Hutang']);
             $table->timestamps();
         });
