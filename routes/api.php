@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\StockObatController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PenjualanController;
+use App\Http\Controllers\StockObatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,4 +22,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('getObat', [StockObatController::class, 'getObat'])->name('getObat');
 Route::post('getDataObat', [StockObatController::class, 'getDataObat'])->name('getDataObat');
+Route::post('hitung', [PenjualanController::class, 'hitung'])->name('hitung');
 

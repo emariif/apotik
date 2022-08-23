@@ -91,7 +91,7 @@
                             <div class="form-group col-3">
                                 <label>Diskon</label>
                                 <input type="text" class="form-control" onkeypress="return number(event)"
-                                    maxlength="3" name="diskon" id="diskon">
+                                    maxlength="3" name=" diskon" id="diskon">
                             </div>
                             <div class="form-group col-3">
                                 <label>Total Harga</label>
@@ -159,8 +159,73 @@
                 data-target="#modal-info">
                 Tambah
             </button> --}}
-        <div class="modal fade" id="modal-secondary" tabindex="-1" role="dialog"
-            aria-labelledby="modal-secondary-label"> </div>
+        <div class="modal fade" id="modal-secondary">
+            <div class="modal-dialog">
+                <div class="modal-content bg-secondary">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Transaksi Pembayaran</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{-- <form action="{{ route('pembayaran.store') }}" id="pembayaran" method="POST"> --}}
+                        @csrf
+                        <div>
+                            FORM PEMBAYARAN
+                            <hr style="border: 1px solid rgb(180, 1, 1);">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="formGroupExampleInput2">Nota Penjualan</label>
+                                    <input type="text" aria-label="telp" autocomplete="off"
+                                        onkeypress="return number(event)" maxlength="12" name="nota" readonly
+                                        id="no" class="form-control">
+                                </div>
+                                <div class="col-6">
+                                    <label for="label-warning">Kasir {{ Auth::user()->name }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inlineFormCustomSelect" class="mr-sm-2">Total Harga</label>
+                            <input type="text" aria-label="total" autocomplete="off"
+                                onkeypress="return number(event)" maxlength="12" name="totalharga" readonly
+                                id="totalharga" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="formGroupExampleInput2">Diskon</label>
+                            <input type="text" aria-label="diskon" autocomplete="off"
+                                onkeypress="return number(event)" maxlength="3" name="modalDiskon" readonly
+                                id="modalDiskon" class="form-control" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="inlineFormCustomSelect" class="mr-sm-2">Harga Yang Harus Dibayar</label>
+                            <input type="text" aria-label="bayar" autocomplete="off"
+                                onkeypress="return number(event)" maxlength="10" name="yangHarus" readonly
+                                id="yangHarus" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="formGroupExampleInput2" class="mr-sm-2">Yang Dibayar</label>
+                            <input type="text" autocomplete="off" name="yangDibayar" id="yangDibayar"
+                                class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="formGroupExampleInput2">Uang Kembalian</label>
+                            <input type="text" aria-label="kembali" autocomplete="off"
+                                onkeypress="return number(event)" maxlength="12" name="modalPengembalian" readonly
+                                id="kembali" disabled class="form-control">
+                        </div>
+                        <button type="button" id="simpanBayar"
+                            class="btn btn-outline-light btn-success btn-block">Bayar</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-outline-light" data-dismiss="modal"
+                            id="tutup">Batal</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </x-app-layout>
 @stack('js')
@@ -345,5 +410,41 @@
         $('#qty').val(null)
         $('#diskon').val(null)
         $('#diskon').attr('disabled', false)
+    })
+
+    // Cari Total Pembayaran
+    $('#btn-bayar').click(function() {
+        let id = $('#nota').val()
+        $.ajax({
+            url: "{{ route('hitung') }}",
+            type: 'post',
+            data: {
+                id: id,
+                _token: "{{ csrf_token() }}"
+            },
+            success: function(res) {
+                console.log(res);
+                $('#totalharga').val(res.data[0].totalHarga)
+                $('#yangHarus').val(parseInt(res.data[0].totalHarga) - parseInt(res.diskon))
+                $('#modalDiskon').val(res.diskon)
+                $('#no').val(res.data[0].nota)
+            }
+        })
+    })
+
+    $(document).on('blur', '#yangDibayar', function() {
+        $('#yangDibayar').blur(function() {
+            let a = parseInt($('#yangHarus').val())
+            let b = $(this).val()
+            let c = b - a
+
+            if (c < 0) {
+                toastr.info('periksa Inputan', 'info')
+                $('#simpanBayar').hide()
+            } else {
+                $('#kembali').val(c)
+                $('#simpanBayar').show()
+            }
+        })
     })
 </script>

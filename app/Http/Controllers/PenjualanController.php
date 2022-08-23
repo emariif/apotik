@@ -75,7 +75,7 @@ class PenjualanController extends Controller
             "tanggal" => $request->tanggal,
             "qty" => $request->qty,
             // "pajak" => $request->pajak, //0 = non pajak, 1 = pajak
-            // "diskon" => $request->diskon,
+            "diskon" => $request->diskon,
             "subTotal" => $request->total, //lihat name di form
             "item" => $request->obat, //lihat name di form
             "consumer" => $idPasien,
@@ -139,5 +139,17 @@ class PenjualanController extends Controller
         } else {
             return response()->json(['text' => 'Sistem Error'], 500);
         }
+    }
+
+    public function hitung(Request $request){
+        $id = $request->id;
+        $data = Penjualan::hitung($id)->get();
+        $datas = Penjualan::where('nota', $id)->get();
+        $discount = [];
+        foreach ($datas as $key) {
+            array_push($discount, ($key->diskon/100 * $key->subTotal)); //diskon yang didapat
+        }
+        $diskon = array_sum($discount); //total diskon 
+        return response()->json(['data' => $data, 'diskon' => $diskon], 200);
     }
 }

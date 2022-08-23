@@ -30,4 +30,12 @@ class Penjualan extends Model
     {
         return $this->belongsTo(User::class, 'kasir');
     }
+
+    public static function hitung($id){
+        $data = Penjualan::where('nota', $id)
+            ->selectRaw('SUM(subTotal) as totalHarga')
+            ->selectRaw('nota')
+            ->groupBy('nota');
+        return $data;
+    }
 }
