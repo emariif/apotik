@@ -145,7 +145,8 @@
                                         onkeypress="return number(event)" maxlength="12" name="kwitansi" hidden
                                         id="kwitansi" class="form-control" value="{{ $nomer }}">
 
-                                    <input type="submit" name="cetak" id="cetak" value="Ambil Laporan!" />
+                                    <button id="cetak" name="cetak" class="btn btn-danger float-left"><i
+                                            class="far fa-file-pdf"></i>&nbsp; Cetak Slip</button>
                                 </form>
                                 <button type="button" id="btn-bayar" name="btn-bayar" data-toggle="modal"
                                     id="btn-modal" data-target="#modal-secondary" class="btn btn-danger"><i

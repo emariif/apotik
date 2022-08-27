@@ -34,17 +34,17 @@
                     <tr>
                         <td>Customer</td>
                         <td>:</td>
-                        <td>{{ $data[0]->customer }}</td>
+                        <td>{{ $data[0]->consumers->nama }}</td>
                     </tr>
                     <tr>
                         <td>Telp</td>
                         <td>:</td>
-                        <td>{{ $data[0]->telp }}</td>
+                        <td>{{ $data[0]->consumers->telp }}</td>
                     </tr>
                     <tr>
                         <td>Kasir</td>
                         <td>:</td>
-                        <td>{{ $data[0]->name }}</td>
+                        <td>{{ $data[0]->kasirs->name }}</td>
                     </tr>
                 </table>
             </div>
@@ -67,11 +67,11 @@
                     {{-- Data --}}
                     @foreach ($data as $item)
                 <tr>
-                    <td>{{ $item->kode }}</td>
-                    <td>{{ $item->nama_obat }}</td>
+                    <td>{{ $item->obats->kode }}</td>
+                    <td>{{ $item->obats->nama }}</td>
                     <td>{{ $item->qty }}</td>
-                    {{-- <td>{{ $item->satuan }}</td> --}}
-                    <td>{{ $item->jual }}</td>
+                    <td>{{ $item->obats->satuans->satuan }}</td>
+                    <td>{{ $item->obats->stockObats->jual }}</td>
                     <td>{{ $item->subTotal }}</td>
                 </tr>
                 @endforeach
@@ -98,40 +98,40 @@
                     <th width="10%"></th>
                     <th width="15%"></th>
                 </tr>
-                {{-- <tr>
+                <tr>
                     <td></td>
                     <td></td>
                     <td>Total </td>
                     <td>: Rp. </td>
                     <td style="text-align: right">{{ number_format($bruto[0]->bruto, 2) }}</td>
-                </tr> --}}
+                </tr>
                 <tr>
                     <td></td>
                     <td></td>
                     <td>Discount </td>
                     <td>: Rp. </td>
-                    <td style="text-align: right">{{ number_format($data[0]->diskon, 2) }}</td>
+                    <td style="text-align: right">{{ number_format($data[0]->pembayarans->diskon, 2) }}</td>
                 </tr>
                 <tr>
                     <td></td>
                     <td></td>
                     <td>Besar Uang </td>
                     <td>: Rp. </td>
-                    <td style="text-align: right">{{ number_format($data[0]->dibayar, 2) }}</td>
+                    <td style="text-align: right">{{ number_format($data[0]->pembayarans->dibayar, 2) }}</td>
                 </tr>
                 <tr>
                     <td></td>
                     <td></td>
                     <td>Pengembalian </td>
                     <td>: Rp. </td>
-                    <td style="text-align: right">{{ number_format($data[0]->kembali, 2) }}</td>
+                    <td style="text-align: right">{{ number_format($data[0]->pembayarans->kembali, 2) }}</td>
                 </tr>
                 <tr>
                     <td></td>
                     <td></td>
                     <td>Total Bersih </td>
                     <td>: Rp. </td>
-                    <td style="text-align: right">{{ number_format($data[0]->total, 2) }}</td>
+                    <td style="text-align: right">{{ number_format($data[0]->pembayarans->total, 2) }}</td>
                 </tr>
                 {{-- <tr>
                     <td colspan="5">

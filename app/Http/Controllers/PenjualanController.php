@@ -12,9 +12,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use Barryvdh\DomPDF\Facade\Pdf;
-// use Dompdf;
-use Dompdf\Dompdf;
-use Dompdf\Options;
 use Illuminate\Support\Facades\Response;
 use App;
 
@@ -162,21 +159,22 @@ class PenjualanController extends Controller
     public function cetakNota(Request $request){
         // dd($request->kwitansi);
         $nota = $request->kwitansi; 
-        $data = Penjualan::joinCetak()
+        $data = Penjualan::with('obats', 'consumers', 'stock_obats', 'kasirs', 'pembayarans')
             // ->where('penjualans.nota', 'NT20220810000001')
-            ->where('penjualans.nota', $nota)
+            ->where('nota', $nota)
             ->get();
-        // $bruto = Penjualan::joinCetak()
-        //     ->where('penjualans.nota', $nota)
-        //     ->selectRaw('SUM(subTotal) as bruto')
-        //     ->groupBy('penjualans.nota')
-        //     ->get();
-        $pdf = Pdf::loadView('owner.cetakNota', compact('data'));
+        $bruto = Penjualan::with('obats', 'consumers', 'stock_obats', 'kasirs', 'pembayarans')
+            ->where('penjualans.nota', ['nota' => $nota])
+            ->selectRaw('SUM(subTotal) as bruto')
+            ->groupBy('penjualans.nota')
+            ->get();
+        $pdf = Pdf::loadView('owner.cetakNota', compact('data', 'bruto'));
 
         // dd($pdf);
         // $pdf = Pdf::loadView('owner.cetakNota', ['data' => $data, 'bruto' => $bruto]);
-
-        return $pdf->stream('invoice.pdf');
+        
+        
+        return $pdf->download('invoice.pdf');
 
     }
 

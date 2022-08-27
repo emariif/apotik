@@ -45,30 +45,30 @@ class Penjualan extends Model
         return $data;
     }
 
-    public static function joinCetak()
-    {
-        return $data = DB::table('penjualans')
-            ->join('obats', 'obats.id', '=', 'penjualans.item')
-            ->join('pasiens', 'pasiens.id', '=', 'penjualans.consumer')
-            ->join('stock_obats', 'stock_obats.obat_id', '=', 'obats.id')
-            ->join('users', 'users.id', '=', 'penjualans.kasir')
-            ->join('pembayarans', 'pembayarans.nota', '=', 'penjualans.nota')
-            ->select(
-                'penjualans.*',
-                'obats.nama as nama_obat',
-                'obats.indikasi',
-                'obats.kode',
-                'obats.dosis',
-                // 'satuans.satuan',
-                'pasiens.nama as customer',
-                'pasiens.alamat',
-                'pasiens.telp',
-                'users.name',
-                'pembayarans.total',
-                'pembayarans.kembali',
-                'pembayarans.diskon',
-                'pembayarans.dibayar',
-                'stock_obats.jual'
-            );
-    }
+    // public static function joinCetak()
+    // {
+    //     return $data = DB::table('penjualans')
+    //         ->join('obats', 'obats.id', '=', 'penjualans.item')
+    //         ->join('pasiens', 'pasiens.id', '=', 'penjualans.consumer')
+    //         ->join('stock_obats', 'stock_obats.obat_id', '=', 'obats.id')
+    //         ->join('users', 'users.id', '=', 'penjualans.kasir')
+    //         ->join('pembayarans', 'pembayarans.nota', '=', 'penjualans.nota')
+    //         ->select(
+    //             'penjualans.*',
+    //             'obats.nama as nama_obat',
+    //             'obats.indikasi',
+    //             'obats.kode',
+    //             'obats.dosis',
+    //             'satuans.satuan',
+    //             'pasiens.nama as customer',
+    //             'pasiens.alamat',
+    //             'pasiens.telp',
+    //             'users.name',
+    //             'pembayarans.total',
+    //             'pembayarans.kembali',
+    //             'pembayarans.diskon',
+    //             'pembayarans.dibayar',
+    //             'stock_obats.jual'
+    //         );
+    // }
 }
