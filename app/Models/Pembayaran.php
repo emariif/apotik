@@ -17,4 +17,8 @@ class Pembayaran extends Model
         'kembali',
         'status',
     ];
+
+    public function penjualans(){
+        return $this->hasMany(Pembayaran::class, 'nota', 'nota');
+    }
 }

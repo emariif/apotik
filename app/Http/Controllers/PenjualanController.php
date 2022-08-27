@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use Barryvdh\DomPDF\Facade\Pdf;
+// use Dompdf;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use Illuminate\Support\Facades\Response;
+use App;
 
 class PenjualanController extends Controller
 {
@@ -95,7 +100,7 @@ class PenjualanController extends Controller
     
     public function dataTable(Request $request){
         $nota = $request->id;
-        $data = Penjualan::with('obats', 'pasiens', 'stock_obats', 'users')->where('nota', $nota)->latest();
+        $data = Penjualan::with('obats', 'consumers', 'stock_obats', 'kasirs')->where('nota', $nota)->latest();
         // $data = Penjualan::all()->where('nota', $nota)->last();
         // if(request()->ajax()) {
         //     return dataTables()->of($data)
@@ -152,5 +157,35 @@ class PenjualanController extends Controller
         }
         $diskon = array_sum($discount); //total diskon 
         return response()->json(['data' => $data, 'diskon' => $diskon], 200);
+    }
+
+    public function cetakNota(Request $request){
+        // dd($request->kwitansi);
+        $nota = $request->kwitansi; 
+        $data = Penjualan::joinCetak()
+            // ->where('penjualans.nota', 'NT20220810000001')
+            ->where('penjualans.nota', $nota)
+            ->get();
+        // $bruto = Penjualan::joinCetak()
+        //     ->where('penjualans.nota', $nota)
+        //     ->selectRaw('SUM(subTotal) as bruto')
+        //     ->groupBy('penjualans.nota')
+        //     ->get();
+        $pdf = Pdf::loadView('owner.cetakNota', compact('data'));
+
+        // dd($pdf);
+        // $pdf = Pdf::loadView('owner.cetakNota', ['data' => $data, 'bruto' => $bruto]);
+
+        return $pdf->stream('invoice.pdf');
+
+    }
+
+    public function download(Request $request){
+        $nota = $request->kwitansi; 
+        $pdf = PDF::loadView("owner.cetakNota", [$nota]);
+        // return Pdf::loadFile(public_path().'images/file')->save('/path-to/my_stored_file.pdf')->stream('download.pdf');
+        return $pdf->stream('invoice.pdf');
+
+
     }
 }

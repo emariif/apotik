@@ -96,7 +96,7 @@ return array(
             "https://" => ["rules" => []]
         ],
 
-         /**
+        /**
           * @var string
           */
         'log_output_file' => null,

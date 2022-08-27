@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\StockObatController;
 use App\Http\Controllers\PembayaranController;
+use App\Http\Controllers\SatuanController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
@@ -56,6 +57,12 @@ Route::group(['middleware' => ['role:owner']], function() {
     Route::post('penjualan.hapus', [PenjualanController::class, 'hapus'])->name('hapusOrder');
 
     Route::post('penjualan.store', [PembayaranController::class, 'store'])->name('simpanPenjualan');
-});
+    
+    Route::post('penjualan.cetak', [PenjualanController::class, 'cetakNota'])->name('cetakNota');
+    Route::get('penjualan.cetak', [PenjualanController::class, 'cetakNota'])->name('cetakNota');
+    Route::get('download', [PenjualanController::class, 'download'])->name('downloadPDF');
+
+    Route::get('generate-pdf', [SatuanController::class, 'generatePdf'])->name('generate');
+}); 
 
 require __DIR__.'/auth.php';

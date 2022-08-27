@@ -135,23 +135,26 @@
 
                             </div>
                             <div class="col-3">
-                                {{-- <form action="{{ route('cetakNota') }}" method="post">
+                                {{-- <a href="{{ url('penjualan.cetak') }}">
+                                    <button class="btn btn-danger float-left"><i class="far fa-file-pdf"></i>&nbsp;
+                                        Cetak Slip</button>
+                                </a> --}}
+                                <form action="{{ route('cetakNota') }}" method="post">
                                     @csrf
                                     <input type="text" aria-label="telp" autocomplete="off"
                                         onkeypress="return number(event)" maxlength="12" name="kwitansi" hidden
                                         id="kwitansi" class="form-control" value="{{ $nomer }}">
 
-                                    <button id="cetak" name="cetak" class="btn btn-danger float-left"><i
-                                            class="far fa-file-pdf"></i>$nbsp; Cetak Slip</button>
-                                </form> --}}
+                                    <input type="submit" name="cetak" id="cetak" value="Ambil Laporan!" />
+                                </form>
                                 <button type="button" id="btn-bayar" name="btn-bayar" data-toggle="modal"
                                     id="btn-modal" data-target="#modal-secondary" class="btn btn-danger"><i
                                         class="fas fa-money-bill-wave"></i>Proses</button>
                                 {{-- Midtrans --}}
                                 {{-- <button type="button" id="btn-checkOut" name="btn-check" data-toggle="modal" id="btn-modal2" data-target="#modal" class="btn btn-warning"><i class="fas fa-money-bill-wave"></i>Checkout</button> --}}
 
-                                {{-- <button class="transaksiBaru btn btn-warning" id="transaksiBaru">Transaksi
-                                    Baru</button> --}}
+                                <button class="transaksiBaru btn btn-warning" id="transaksiBaru">Transaksi
+                                    Baru</button>
                             </div>
                         </div>
                     </div>
@@ -243,7 +246,7 @@
     $(document).ready(function() {
         // $('#obat').select2()
         // $('#cetak').hide()
-        // $('#transaksiBaru').hide()
+        $('#transaksiBaru').hide()
     })
 
     function number(evt) {
@@ -470,6 +473,11 @@
                 toastr.success(res.text, 'Sukses')
                 $('#tutup').click()
                 $('#tambah').hide()
+                $('#cetak').show()
+                $('#transaksiBaru').show()
+            },
+            error: function(xhr) {
+                toastr.error(xhr.responseJSON.text, 'Gagal')
             }
         })
     })
