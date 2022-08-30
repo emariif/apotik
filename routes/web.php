@@ -54,6 +54,7 @@ Route::group(['middleware' => ['role:owner']], function() {
     // Route::post('penjualan.store', [PenjualanController::class, 'store'])->name('penjualan.store');
     Route::get('penjualan.dataTable', [PenjualanController::class, 'dataTable'])->name('dataTable');
     Route::post('penjualan.hapus', [PenjualanController::class, 'hapus'])->name('hapusOrder');
+    Route::post('penjualan.cetak', [PenjualanController::class, 'cetakNota'])->name('cetakNota');
 
     Route::post('penjualan.store', [PembayaranController::class, 'store'])->name('simpanPenjualan');
 });

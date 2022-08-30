@@ -135,7 +135,7 @@
 
                             </div>
                             <div class="col-3">
-                                {{-- <form action="{{ route('cetakNota') }}" method="post">
+                                <form action="{{ route('cetakNota') }}" method="post">
                                     @csrf
                                     <input type="text" aria-label="telp" autocomplete="off"
                                         onkeypress="return number(event)" maxlength="12" name="kwitansi" hidden
@@ -143,7 +143,7 @@
 
                                     <button id="cetak" name="cetak" class="btn btn-danger float-left"><i
                                             class="far fa-file-pdf"></i>$nbsp; Cetak Slip</button>
-                                </form> --}}
+                                </form>
                                 <button type="button" id="btn-bayar" name="btn-bayar" data-toggle="modal"
                                     id="btn-modal" data-target="#modal-secondary" class="btn btn-danger"><i
                                         class="fas fa-money-bill-wave"></i>Proses</button>

@@ -80,7 +80,7 @@
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Stock Akhir</label>
                                 <input type="text" class="form-control" readonly onkeypress="return number(event)"
-                                    autocomplete="off" id="stock" name="stock" value="">
+                                    autocomplete="off" id="stock" name="stock" value="0">
                             </div>
                             <div>
                                 STOCK OBAT

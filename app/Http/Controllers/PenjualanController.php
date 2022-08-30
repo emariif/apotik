@@ -153,4 +153,8 @@ class PenjualanController extends Controller
         $diskon = array_sum($discount); //total diskon 
         return response()->json(['data' => $data, 'diskon' => $diskon], 200);
     }
+
+    public function cetakNota(Request $request){
+        $data = $request->kwitansi;
+    }
 }
