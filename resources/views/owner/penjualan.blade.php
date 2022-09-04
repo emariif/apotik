@@ -136,10 +136,10 @@
                             </div>
                             <div class="col-3">
                                 {{-- <a href="{{ url('penjualan.cetak') }}">
-                                    <button class="btn btn-danger float-left"><i class="far fa-file-pdf"></i>&nbsp;
+                                    <button class="btn btn-success float-left"><i class="far fa-file-pdf"></i>&nbsp;
                                         Cetak Slip</button>
                                 </a> --}}
-                                <form action="{{ route('cetakNota') }}" method="post">
+                                <form action="{{ route('cetakNota') }}" method="get">
                                     @csrf
                                     <input type="text" aria-label="telp" autocomplete="off"
                                         onkeypress="return number(event)" maxlength="12" name="kwitansi" hidden
@@ -177,54 +177,54 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        {{-- <form action="{{ route('pembayaran.store') }}" id="pembayaran" method="POST"> --}}
-                        @csrf
-                        <div>
-                            FORM PEMBAYARAN
-                            <hr style="border: 1px solid rgb(180, 1, 1);">
-                            <div class="row">
-                                <div class="col-6">
-                                    <label for="formGroupExampleInput2">Nota Penjualan</label>
-                                    <input type="text" aria-label="telp" autocomplete="off"
-                                        onkeypress="return number(event)" maxlength="12" name="nota" readonly
-                                        id="no" class="form-control">
-                                </div>
-                                <div class="col-6">
-                                    <label for="label-warning">Kasir {{ Auth::user()->name }}</label>
+                        <form action="{{ route('simpanPenjualan') }}" id="pembayaran" method="POST">
+                            @csrf
+                            <div>
+                                FORM PEMBAYARAN
+                                <hr style="border: 1px solid rgb(180, 1, 1);">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label for="formGroupExampleInput2">Nota Penjualan</label>
+                                        <input type="text" aria-label="telp" autocomplete="off"
+                                            onkeypress="return number(event)" maxlength="12" name="nota" readonly
+                                            id="no" class="form-control">
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="label-warning">Kasir {{ Auth::user()->name }}</label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inlineFormCustomSelect" class="mr-sm-2">Total Harga</label>
-                            <input type="text" aria-label="total" autocomplete="off"
-                                onkeypress="return number(event)" maxlength="12" name="totalharga" readonly
-                                id="totalharga" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="formGroupExampleInput2">Diskon</label>
-                            <input type="text" aria-label="diskon" autocomplete="off"
-                                onkeypress="return number(event)" maxlength="3" name="modalDiskon" readonly
-                                id="modalDiskon" class="form-control" value="0">
-                        </div>
-                        <div class="form-group">
-                            <label for="inlineFormCustomSelect" class="mr-sm-2">Harga Yang Harus Dibayar</label>
-                            <input type="text" aria-label="bayar" autocomplete="off"
-                                onkeypress="return number(event)" maxlength="10" name="yangHarus" readonly
-                                id="yangHarus" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="formGroupExampleInput2" class="mr-sm-2">Yang Dibayar</label>
-                            <input type="text" autocomplete="off" name="yangDibayar" id="yangDibayar"
-                                class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="formGroupExampleInput2">Uang Kembalian</label>
-                            <input type="text" aria-label="kembali" autocomplete="off"
-                                onkeypress="return number(event)" maxlength="12" name="modalPengembalian" readonly
-                                id="kembali" disabled class="form-control">
-                        </div>
-                        <button type="button" id="simpanBayar"
-                            class="btn btn-outline-light btn-success btn-block">Bayar</button>
+                            <div class="form-group">
+                                <label for="inlineFormCustomSelect" class="mr-sm-2">Total Harga</label>
+                                <input type="text" aria-label="total" autocomplete="off"
+                                    onkeypress="return number(event)" maxlength="12" name="totalharga" readonly
+                                    id="totalharga" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="formGroupExampleInput2">Diskon</label>
+                                <input type="text" aria-label="diskon" autocomplete="off"
+                                    onkeypress="return number(event)" maxlength="3" name="modalDiskon" readonly
+                                    id="modalDiskon" class="form-control" value="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="inlineFormCustomSelect" class="mr-sm-2">Harga Yang Harus Dibayar</label>
+                                <input type="text" aria-label="bayar" autocomplete="off"
+                                    onkeypress="return number(event)" maxlength="10" name="yangHarus" readonly
+                                    id="yangHarus" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="formGroupExampleInput2" class="mr-sm-2">Yang Dibayar</label>
+                                <input type="text" autocomplete="off" name="yangDibayar" id="yangDibayar"
+                                    class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="formGroupExampleInput2">Uang Kembalian</label>
+                                <input type="text" aria-label="kembali" autocomplete="off"
+                                    onkeypress="return number(event)" maxlength="12" name="modalPengembalian"
+                                    readonly id="kembali" disabled class="form-control">
+                            </div>
+                            <button type="button" id="simpanBayar"
+                                class="btn btn-outline-light btn-success btn-block">Bayar</button>
                         </form>
                     </div>
                     <div class="modal-footer justify-content-between">
@@ -312,8 +312,8 @@
                 console.log(res);
                 // $('#btn-tutup').click()
                 $('#obat').prop('disabled', true)
-                $('#qty').prop('disabled', true)
-                $('#diskon').prop('disabled', true)
+                $('#qty').attr('disabled', true)
+                $('#diskon').attr('disabled', true)
                 $('#tambah').hide()
                 $('#tabel').DataTable().ajax.reload()
                 // $('#tabel').DataTable().draw();
@@ -462,6 +462,7 @@
         $.ajax({
             url: "{{ route('simpanPenjualan') }}",
             type: 'post',
+
             data: {
                 kembali: $('#kembali').val(),
                 total: $('#yangHarus').val(),

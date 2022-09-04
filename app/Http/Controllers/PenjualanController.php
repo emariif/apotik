@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Faker\Provider\File;
 use Illuminate\Support\Facades\Response;
 use App;
 
@@ -161,20 +162,25 @@ class PenjualanController extends Controller
         $nota = $request->kwitansi; 
         $data = Penjualan::with('obats', 'consumers', 'stock_obats', 'kasirs', 'pembayarans')
             // ->where('penjualans.nota', 'NT20220810000001')
-            ->where('nota', $nota)
+            ->where('penjualans.nota', $nota)
             ->get();
         $bruto = Penjualan::with('obats', 'consumers', 'stock_obats', 'kasirs', 'pembayarans')
             ->where('penjualans.nota', ['nota' => $nota])
+            // ->where('penjualans.nota', 'NT20220810000001')
             ->selectRaw('SUM(subTotal) as bruto')
             ->groupBy('penjualans.nota')
             ->get();
-        $pdf = Pdf::loadView('owner.cetakNota', compact('data', 'bruto'));
+        $pdf = app('dompdf.wrapper');
+        // $pdf = Pdf::loadView('owner.cetakNota', compact('data', 'bruto'));
 
         // dd($pdf);
-        // $pdf = Pdf::loadView('owner.cetakNota', ['data' => $data, 'bruto' => $bruto]);
-        
-        
-        return $pdf->download('invoice.pdf');
+        $pdf = Pdf::loadView('owner.cetakNota', ['data' => $data, 'bruto' => $bruto]);
+        return $pdf->download('file.pdf');
+        // return response($pdf, 200)
+        //     ->header('Content-Type', File::mimeType($pdf));
+        //     exit();
+        // dd($pdf);
+        // return $pdf->download('file.pdf');
 
     }
 
